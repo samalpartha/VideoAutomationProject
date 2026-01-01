@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Video Automation Suite">
+    <test name="Android TV Tests">
+        <parameter name="platformName" value="androidtv"/>
+        <classes>
+            <class name="com.videoautomation.tests.PlaybackTest"/>
+        </classes>
+    </test>
+    
+    <!--
+    <test name="Roku Tests">
+        <parameter name="platformName" value="roku"/>
+        <classes>
+            <class name="com.videoautomation.tests.PlaybackTest"/>
+        </classes>
+    </test>
+    -->
+</suite>
