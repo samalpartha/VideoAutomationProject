@@ -1,43 +1,56 @@
 # Video Automation Project (TV)
 
-Unified automation framework for **Android TV**, **Apple TV**, **Roku**, and **Samsung Tizen**.
-
-## Architecture
-*   **Java + Maven + TestNG**: Standard stack.
-*   **Appium**: Used for Android TV and Apple TV.
-*   **OkHttp (ECP)**: Used for Roku control via REST API.
-*   **Unified RemoteController**: Abstracts D-Pad navigation (`pressRight`, `pressSelect`) across disparate platforms.
-
-## Key Features
-*   **Multi-Platform Support**: Android TV, Apple TV, Roku, Tizen, Chromecast.
-*   **Auto-Healing**: Infrastructure ready via `HealingHelper`.
-*   **Chromecast Support**: Debugger Protocol integration on port 9222.
-*   **Allure Reporting**: Integrated for visual test results.
-
-## Prerequisites
-1.  **Android TV**: Android Emulator or Device with USB debugging.
-2.  **Apple TV**: Xcode Simulator or Device + Appium setup.
-3.  **Roku**: Enable "Developer Mode" on Roku device (Home -> 3xUp, 2xUp, R, L, R, L, R). Get IP address.
-4.  **Tizen**: Tizen Studio + Appium Tizen Driver.
-5.  **Chromecast**:
-    *   Enable Developer Mode on Chromecast.
-    *   Start your Receiver App (CAF Receiver) on the Chromecast.
-    *   Get IP address of Chromecast.
-    *   Ensure port 9222 (or configured port) is accessible.
-
-## Configuration
-Edit `src/test/resources/config.properties`:
-```properties
-# Select Platform: androidtv, appletv, roku, tizen, chromecast
-platform=chromecast
-
-# Chromecast Specific
-chromecastIp=192.168.1.55
-chromecastPort=9222
+```mermaid
+graph LR
+    A[RemoteController API] --> B{Protocol Adapter}
+    B -->|ADB| C[Android TV / Fire TV]
+    B -->|XCUITest| D[Apple TV]
+    B -->|ECP / REST| E[Roku]
+    B -->|Tizen Driver| F[Samsung TV]
+    B -->|CDP / port 9222| G[Chromecast]
+    
+    subgraph "Navigation Concepts"
+        H[D-Pad Abstraction]
+        I[Deep Links]
+        J[Focus Management]
+    end
+    
+    A --> H
+    A --> I
 ```
 
-## Running Tests
+Advanced multi-platform automation framework for **Big Screen** ecosystems.
+
+## 📺 Ecosystem Coverage
+- **Android TV / Fire TV**: Native Appium automation with ADB deep-link integration.
+- **Apple TV (tvOS)**: XCUITest automation via Appium with Simulator/Real device support.
+- **Roku**: Rest-based control via **ECP (External Control Protocol)**.
+- **Samsung Tizen**: Dedicated Tizen Driver integration for web-based Smart TV apps.
+- **Chromecast**: Debugger Protocol (CDP) interaction on port 9222 for CAF Receiver apps.
+
+## 🕹 Unified Remote Controller
+The framework features a `RemoteController` abstraction that provides a consistent API for D-Pad navigation across all disparite platforms:
+- `pressRight()`, `pressLeft()`, `pressUp()`, `pressDown()`
+- `pressSelect()`, `back()`, `home()`
+- Handling of platform-specific keycodes and REST endpoints transparently.
+
+## 🚀 Key Features & Standards
+- **Wait Strategies**: Intelligent polling and visibility checks for heavy TV UI transitions.
+- **Localization**: Shared Chapter 14 utilities for multi-language and pseudo-localization verification.
+- **Advanced Reporting (Chapter 13)**:
+    - **Execution Summaries**: High-level TestNG console output for quick analysis.
+    - **Allure Integration**: Visualized results for complex TV navigation flows.
+
+## 🛠 Prerequisites
+1.  **JDK 11+** & **Maven**.
+2.  **Appium 2.x** with `uiautomator2`, `xcuitest`, and `tizen` drivers.
+3.  **Roku**: Developer Mode enabled.
+4.  **Chromecast**: CAF Receiver app running with remote debugging enabled.
+
+## 🏃 Running Tests
 ```bash
+# Example executions
 mvn clean test -DplatformName=androidtv
 mvn clean test -DplatformName=chromecast
+mvn clean test -DplatformName=roku
 ```
