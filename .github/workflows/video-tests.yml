@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    name: Run Video Tests
+    name: Run Video Tests Fixed
     runs-on: macos-latest
 
     steps:
@@ -29,13 +29,14 @@ jobs:
           appium driver install uiautomator2
 
       - name: Run Tests
-        run: mvn clean test -DplatformName=androidtv
+        run: |
+          pwd
+          ls -R
+          mvn clean test -DplatformName=androidtv
         continue-on-error: true
 
       - name: Generate Allure Report
-        run: |
-          npm install -g allure-commandline
-          mvn allure:report
+        run: mvn allure:report
         if: always()
 
       - name: Upload Allure Results
